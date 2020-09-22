@@ -1,0 +1,2 @@
+rootProject.name='Absence Application'
+include ':app'
