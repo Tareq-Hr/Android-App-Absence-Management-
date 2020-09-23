@@ -5,12 +5,16 @@ import java.util.ArrayList;
 public class Etudiant {
     private String nom;
     private String prenom;
-    private String cne;
+    private int id;
 
-    public Etudiant(String nom, String prenom, String cne){
+    public Etudiant(String nom, String prenom, int id){
         this.nom = nom;
         this.prenom = prenom;
-        this.cne = cne;
+        this.id = id;
+    }
+
+    public Etudiant() {
+
     }
 
 
@@ -30,12 +34,12 @@ public class Etudiant {
         this.prenom = prenom;
     }
 
-    public String getCne() {
-        return cne;
+    public int getId() {
+        return id;
     }
 
-    public void setCne(String cne) {
-        this.cne = cne;
+    public void setId(int id) {
+        this.id = id;
     }
 
     private static int lastContactId = 0;
@@ -44,7 +48,7 @@ public class Etudiant {
         ArrayList<Etudiant> contacts = new ArrayList<Etudiant>();
 
         for (int i = 1; i <= numContacts; i++) {
-            contacts.add(new Etudiant("Tareq " ,""+ ++lastContactId,"M144015604"));
+            contacts.add(new Etudiant("Tareq " ,"EL Hariri",++lastContactId));
         }
 
         return contacts;
