@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,10 +17,16 @@ import java.util.List;
 
 public class GestionAbsence extends AppCompatActivity {
 
-    private ArrayList<Etudiant> etudiantsName = new ArrayList<>();
     private RecyclerView etudiants_list;
     private EtudiantsAdapter etudiantsAdapter;
     private Etudiant e;
+    private DAO dao;
+    private MyDatabase mydb;
+    private SQLiteDatabase db;
+    private final String DELETE_TABLE = "delete from Etudiants";
+    private final String AJOUTER_ETUDIANTS = "insert into Etudiants(nom,prenom) values ('EL HARIRI','TAREQ'),('ESSADIQ','LAKHLIFI')," +
+            "('ELBOUNI','FATIMA ZAHRA'),('AISSAOUI','ALI'),('OUBTOU','MOHAMED'),('NASSIMI','ANAS'),('YAZIDI','IMRAN')," +
+            "('ZOUITNI','CHAIMAE'),('BEN BAHYA','ILHAM'),('ELABOUI','HAFIDA')";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,21 +35,11 @@ public class GestionAbsence extends AppCompatActivity {
 
         etudiants_list = findViewById(R.id.recyclerView2);
 
-        etudiantsName = Etudiant.createContactsList(20);
+        dao = new DAO(getApplicationContext());
 
-        etudiantsAdapter = new EtudiantsAdapter(this, etudiantsName);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        this.etudiants_list.setLayoutManager(llm);
-        this.etudiants_list.setAdapter(etudiantsAdapter);
-    }
-
-
-    public void AfficherListe(View view){
+        System.out.println(dao.getAllEtudiants().toString());
         String[] et;
-        List<Etudiant> etudiantList = DAO.getAllEtudiants();
-        ListView list = (ListView) findViewById(R.id.recyclerView2);
-
+        ArrayList<Etudiant> etudiantList = dao.getAllEtudiants();
         if(etudiantList!=null){
             int i=0;
             et = new String[etudiantList.size()];
@@ -51,9 +48,23 @@ public class GestionAbsence extends AppCompatActivity {
                 et[i] = e.getId()+" "+e.getPrenom()+" "+e.getNom();
                 i++;
             }
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,et);
-            list.setAdapter(adapter);
+
+            etudiantsAdapter = new EtudiantsAdapter(this, etudiantList);
+            LinearLayoutManager llm = new LinearLayoutManager(this);
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            etudiants_list.setLayoutManager(llm);
+            etudiants_list.setAdapter(etudiantsAdapter);
+
+            mydb = new MyDatabase(getApplicationContext());
+
         }
     }
+
+    public void delete_db(View view){
+        db = mydb.getWritableDatabase();
+        db.execSQL(DELETE_TABLE);
+        db.execSQL(AJOUTER_ETUDIANTS);
+    }
+
 
 }

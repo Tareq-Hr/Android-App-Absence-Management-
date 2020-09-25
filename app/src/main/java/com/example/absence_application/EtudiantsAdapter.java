@@ -31,7 +31,7 @@ public class EtudiantsAdapter extends RecyclerView.Adapter<EtudiantsAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Etudiant etudiants = etudiant.get(position);
-        holder.name.setText(etudiants.getNom()+" "+etudiants.getPrenom());
+        holder.name.setText(etudiants.getNom() + " " + etudiants.getPrenom());
         Switch aSwitch = holder.aSwitch;
         aSwitch.setEnabled(true);
     }

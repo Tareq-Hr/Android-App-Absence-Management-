@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DAO {
-    private static SQLiteDatabase sql_db;
-    private static MyDatabase my_db;
+    private  SQLiteDatabase sql_db;
+    private  MyDatabase my_db;
 
     public DAO(Context context){
         my_db =  new MyDatabase(context);
@@ -20,12 +20,13 @@ public class DAO {
         my_db.onCreate(sql_db);
     }
 
-    public void AjouterEtudiants(Etudiant e){
+   /* public void AjouterEtudiants(){
         sql_db = my_db.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(MyDatabase.col_nom, "tareq");
-        contentValues.put(MyDatabase.col_prenom, "har");
+        contentValues.put(MyDatabase.col_nom, "EL HARIRI");
+        contentValues.put(MyDatabase.col_prenom, "TAREQ");
+
 
         try {
             sql_db.insert(MyDatabase.TABLE_ETUDIANTS, null, contentValues);
@@ -33,10 +34,11 @@ public class DAO {
             Log.e("InsertError", ex.getMessage());
         }
     }
-
-    public static List<Etudiant> getAllEtudiants(){
+*/
+    public ArrayList<Etudiant> getAllEtudiants(){
+        System.out.println(my_db.getDatabaseName());
         sql_db = my_db.getReadableDatabase();
-        List<Etudiant> etudiantList = new ArrayList<Etudiant>();
+        ArrayList<Etudiant> etudiantList = new ArrayList<Etudiant>();
 
         Cursor cursor = sql_db.rawQuery("SELECT * FROM "+my_db.TABLE_ETUDIANTS,null);
         if(cursor!=null){
@@ -52,7 +54,7 @@ public class DAO {
         return etudiantList;
     }
 
-    private static Etudiant cursorToEtudiant(Cursor cursor) {
+    private Etudiant cursorToEtudiant(Cursor cursor) {
         Etudiant etudiant = new Etudiant();
         etudiant.setId(cursor.getInt(0));
         etudiant.setNom(cursor.getString(1));
